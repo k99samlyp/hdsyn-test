@@ -5,20 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cmcc.andedu.hdsyn.domain.MsgBean;
 import com.cmcc.andedu.hdsyn.service.EduSynHdMthspService;
 import com.cmcc.andedu.hdsyn.task.EduHdFilesGeneratorTask;
-import com.sun.corba.se.impl.encoding.CodeSetConversion;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 
 import com.cmcc.andedu.hdsyn.domain.EduSynHdMthspQueryEntity;
-import com.cmcc.andedu.hdsyn.repository.EduSynHdMthspQueryConInter;
 
 @RestController
 @RequestMapping("/eduSynHdMthspQuery")
@@ -41,13 +38,8 @@ public class EduSynHdMthspQueryController {
     @GetMapping("/getData")
     @ResponseBody
     public MsgBean getData(@RequestParam String province, @RequestParam String batchnum ) {
-        //List<EduSynHdMthspQueryEntity> eduSynHdMthspQueryEntitiesd = eduSynHdMthspService.findAllOrder(province, batchnum);
-
-        List<Document> documentList = eduSynHdMthspService.findAllOrder_mongo(province, batchnum);
+	    List<Document> documentList = eduSynHdMthspService.findAllOrder_mongo(province, batchnum);
         MsgBean mb = new MsgBean();
-        //mb.setAllcount(eduSynHdMthspQueryEntitiesd.size());
-        //mb.setData(eduSynHdMthspQueryEntitiesd);
-
         mb.setAllcount(documentList.size());
         mb.setData(documentList);
         return mb;

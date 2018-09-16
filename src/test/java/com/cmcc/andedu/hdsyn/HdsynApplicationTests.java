@@ -4,7 +4,6 @@ import com.cmcc.andedu.hdsyn.domain.EduSynHdDb;
 import com.cmcc.andedu.hdsyn.domain.EduSynHdDed;
 import com.cmcc.andedu.hdsyn.domain.EduSynHdMthsp;
 import com.cmcc.andedu.hdsyn.repository.EduSynHdDbMapper;
-import com.cmcc.andedu.hdsyn.repository.EduSynHdDbQueryConInter;
 import com.cmcc.andedu.hdsyn.repository.EduSynHdDedMapper;
 import com.cmcc.andedu.hdsyn.repository.EduSynHdMthspMapper;
 import com.cmcc.andedu.hdsyn.service.*;
