@@ -46,12 +46,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class EduSynHdMthspService {
     private static Logger log = LoggerFactory.getLogger(EduSynHdMthspService.class);
 
-    //static List<EduSynHdMthsp> eduSynHdMthspList = new ArrayList<>();
-
-    @Autowired
-    MongoClient mongoClientBean;
-
-    static List<Document> eduSynHdMthspList = new ArrayList<>();
+    static List<EduSynHdMthsp> eduSynHdMthspList = new ArrayList<>();
 
     @Autowired
     private EduSynHdMthspMapper eduSynHdMthspMapper;
@@ -72,14 +67,11 @@ public class EduSynHdMthspService {
     public int solveingMTHSP(File file) {
         //读取文件内容
         ReadFile.readFile_s(file,true);
-        //List<String> dataList = ReadFile.readFile(file);
 
         //去除最后一行无用的数据
         ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
         if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
             System.out.println("数据长度：" + ReadFile.RDATA.size());
-
-            MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("mthsp");
 
             if (ReadFile.RDATA.size() > batchInsertCount){
                 isDivListInsert = true;
@@ -88,65 +80,38 @@ public class EduSynHdMthspService {
             for (String listString : ReadFile.RDATA) {
                 //将单条数据进行拆分
                 String stringSplit[] = listString.split(" ");
-                //EduSynHdMthsp eduSynHdMthsp = new EduSynHdMthsp();
-//
-//                eduSynHdMthsp.setMidFlag("20");//中间记录标记
-//                eduSynHdMthsp.setServiceType(stringSplit[0].substring(2, stringSplit[0].length()));//业务类型
-//                eduSynHdMthsp.setFeedN(stringSplit[1]);//计费用户号码
-//                eduSynHdMthsp.setTdn(stringSplit[2]);//第三方号码
-//                eduSynHdMthsp.setSpId(stringSplit[3]);//SP代码
-//                eduSynHdMthsp.setServiceCode(stringSplit[4]);//业务代码
-//                eduSynHdMthsp.setFeeType(stringSplit[5].substring(0, 2));//计费类别
-//                eduSynHdMthsp.setMemProperty(stringSplit[5].substring(2, 3));//会员属性
-//                eduSynHdMthsp.setChannel(stringSplit[5].substring(3, 5));//订购渠道
-//                eduSynHdMthsp.setFeeMonth(stringSplit[5].substring(5, 11));//结算月份
-//                eduSynHdMthsp.setOrderTime(stringSplit[5].substring(11, 25));//最后订购时间
-//                eduSynHdMthsp.setFee(Integer.parseInt(stringSplit[5].substring(25, 31)));//标准信息费
-//                eduSynHdMthsp.setPreferentialFee(Integer.parseInt(stringSplit[5].substring(31, 37)));//优惠后信息费
-//                eduSynHdMthsp.setHdTime(stringSplit[5].substring(37, 45));//话单生成日期
-//                eduSynHdMthsp.setProvince(stringSplit[5].substring(stringSplit[5].length() - 3));//用户归属省代码
-//                eduSynHdMthsp.setHdSeq(stringSplit[6]);//话单序列号
-//
-//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-//                String date = df.format(new Date());
-//                eduSynHdMthsp.setCreateDate(date);//记录创建日期
-//                eduSynHdMthsp.setBatchNum(file.getName().substring(5,13));//批次号
+                EduSynHdMthsp eduSynHdMthsp = new EduSynHdMthsp();
 
-
-                Document doc = new Document();
-
-                doc.append("MidFlag","20");//中间记录标记
-                doc.append("ServiceType",stringSplit[0].substring(2));//业务类型
-                doc.append("FeedN",stringSplit[1]);//计费用户号码
-                doc.append("Tdn",stringSplit[2]);//第三方号码
-                doc.append("SpId",stringSplit[3]);//SP代码
-                doc.append("ServiceCode",stringSplit[4]);//业务代码
-                doc.append("FeeType",stringSplit[5].substring(0, 2));//计费类别
-                doc.append("MemProperty",stringSplit[5].substring(2, 3));//会员属性
-                doc.append("Channel",stringSplit[5].substring(3, 5));//订购渠道
-                doc.append("FeeMonth",stringSplit[5].substring(5, 11));//结算月份
-                doc.append("OrderTime",stringSplit[5].substring(11, 25));//最后订购时间
-                doc.append("Fee",Integer.parseInt(stringSplit[5].substring(25, 31)));//标准信息费
-                doc.append("PreferentialFee",Integer.parseInt(stringSplit[5].substring(31, 37)));//优惠后信息费
-                doc.append("HdTime",stringSplit[5].substring(37, 45));//话单生成日期
-                doc.append("Province",stringSplit[5].substring(stringSplit[5].length() - 3));//用户归属省代码
-                doc.append("HdSeq",stringSplit[6]);//话单序列号
+                eduSynHdMthsp.setMidFlag("20");//中间记录标记
+                eduSynHdMthsp.setServiceType(stringSplit[0].substring(2, stringSplit[0].length()));//业务类型
+                eduSynHdMthsp.setFeedN(stringSplit[1]);//计费用户号码
+                eduSynHdMthsp.setTdn(stringSplit[2]);//第三方号码
+                eduSynHdMthsp.setSpId(stringSplit[3]);//SP代码
+                eduSynHdMthsp.setServiceCode(stringSplit[4]);//业务代码
+                eduSynHdMthsp.setFeeType(stringSplit[5].substring(0, 2));//计费类别
+                eduSynHdMthsp.setMemProperty(stringSplit[5].substring(2, 3));//会员属性
+                eduSynHdMthsp.setChannel(stringSplit[5].substring(3, 5));//订购渠道
+                eduSynHdMthsp.setFeeMonth(stringSplit[5].substring(5, 11));//结算月份
+                eduSynHdMthsp.setOrderTime(stringSplit[5].substring(11, 25));//最后订购时间
+                eduSynHdMthsp.setFee(Integer.parseInt(stringSplit[5].substring(25, 31)));//标准信息费
+                eduSynHdMthsp.setPreferentialFee(Integer.parseInt(stringSplit[5].substring(31, 37)));//优惠后信息费
+                eduSynHdMthsp.setHdTime(stringSplit[5].substring(37, 45));//话单生成日期
+                eduSynHdMthsp.setProvince(stringSplit[5].substring(stringSplit[5].length() - 3));//用户归属省代码
+                eduSynHdMthsp.setHdSeq(stringSplit[6]);//话单序列号
 
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
                 String date = df.format(new Date());
-                doc.append("CreateDate",date);//记录创建日期
-                doc.append("BatchNum",file.getName().substring(5,13));//批次号
+                eduSynHdMthsp.setCreateDate(date);//记录创建日期
+                eduSynHdMthsp.setBatchNum(file.getName().substring(5,13));//批次号
 
-                eduSynHdMthspList.add(doc);
+
+                eduSynHdMthspList.add(eduSynHdMthsp);
                 hasIn++;
 
                 if (isDivListInsert && (eduSynHdMthspList.size() == batchInsertCount || hasIn == ReadFile.RDATA.size())){
                     try {
 
-                        //MG插入
-                        cols.insertMany(eduSynHdMthspList);
-
-                        //eduSynHdMthspMapper.batchInsert_mysql(eduSynHdMthspList);
+                        eduSynHdMthspMapper.batchInsert_mysql(eduSynHdMthspList);
                         log.info("插入成功！共计：" + eduSynHdMthspList.size() + "条,还有" + (ReadFile.RDATA.size() - hasIn) + "条");
                         eduSynHdMthspList.clear();
                     } catch (Exception e) {
@@ -159,9 +124,7 @@ public class EduSynHdMthspService {
 
             if (!isDivListInsert){
                 try {
-                    //MG插入
-                    cols.insertMany(eduSynHdMthspList);
-                    //eduSynHdMthspMapper.batchInsert_mysql(eduSynHdMthspList);
+                    eduSynHdMthspMapper.batchInsert_mysql(eduSynHdMthspList);
                     log.info("插入成功！共计：" + eduSynHdMthspList.size() + "条");
                     eduSynHdMthspList.clear();
                     ReadFile.clearDataArea();
@@ -195,22 +158,6 @@ public class EduSynHdMthspService {
         return eduSynHdDebQueryData;
     }
 
-
-    public List<Document> findAllOrder_mongo(String province, String batchnum) {
-        MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("mthsp");
-
-        FindIterable<Document> findIterable = cols.find(and(eq("Province",province),eq("BatchNum",batchnum)));
-
-        MongoCursor<Document> mongoCursor = findIterable.iterator();
-
-        List<Document> resL = new ArrayList<>();
-
-        while (mongoCursor.hasNext()){
-            resL.add(mongoCursor.next());
-        }
-
-        return resL;
-    }
 
 
     /**

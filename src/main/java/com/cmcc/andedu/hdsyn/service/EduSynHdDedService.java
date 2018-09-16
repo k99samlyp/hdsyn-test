@@ -38,15 +38,11 @@ import java.util.List;
 public class EduSynHdDedService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDedService.class);
-    //static List<EduSynHdDed> eduSynHdDedList = new ArrayList<>();
-    static List<Document> eduSynHdDedList = new ArrayList<>();
+    static List<EduSynHdDed> eduSynHdDedList = new ArrayList<>();
 
     boolean isDivListInsert = false;   //是否分表插入（mybatis批量插入有限制，数据太长，分批提交）
 
     int hasIn = 0;
-
-    @Autowired
-    MongoClient mongoClientBean;
 
     private int batchInsertCount;
 
@@ -72,79 +68,48 @@ public class EduSynHdDedService {
 
             System.out.println("数据长度：" + ReadFile.RDATA.size());
 
-            MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("ded");
-
-
             if (ReadFile.RDATA.size() > batchInsertCount){
                 isDivListInsert = true;
             }
 
             for (String listString : ReadFile.RDATA) {
                 //将单条数据进行拆分
-//                EduSynHdDed eduSynHdDed = new EduSynHdDed();
-//
-//                eduSynHdDed.setMidFlag("20");//中间记录标记
-//                eduSynHdDed.setServiceType(ReadFile.getField(listString,3,12));//业务类型
-//                eduSynHdDed.setCutType(ReadFile.getField(listString,13,14));//核减类型
-//                eduSynHdDed.setWoNo(ReadFile.getField(listString,15,34));//工单流水号
-//                eduSynHdDed.setFeeDn(ReadFile.getField(listString,35,49));//计费用户号码
-//                eduSynHdDed.setSpId(ReadFile.getField(listString,50,69));//SP代码
-//                eduSynHdDed.setServiceCode(ReadFile.getField(listString,70,89));//业务代码
-//                eduSynHdDed.setFeeType(ReadFile.getField(listString,90,91));//计费类型
-//                eduSynHdDed.setUseTime(ReadFile.getField(listString,92,105));//业务使用时间
-//                eduSynHdDed.setCutTime(ReadFile.getField(listString,106,119));//核减时间
-//                eduSynHdDed.setCutFee(Integer.parseInt(ReadFile.getField(listString,120,125)));//核减金额
-//                eduSynHdDed.setContentId(ReadFile.getField(listString,126,145));//内容ID
-//                eduSynHdDed.settFlag(ReadFile.getField(listString,146,175));//第三方标识
-//                eduSynHdDed.setSeq(ReadFile.getField(listString,176,200));//序列号
-//                eduSynHdDed.setAddKey1(ReadFile.getField(listString,201,232));//附加查重关键字一
-//                eduSynHdDed.setAddKey2(ReadFile.getField(listString,233,264));//附加查重关键字二
-//                eduSynHdDed.setOrderType(ReadFile.getField(listString,265,267));//订购方式
-//                eduSynHdDed.setRechargeSeq(ReadFile.getField(listString,268,299));//充值序列号
-//                eduSynHdDed.setProvince(ReadFile.getField(listString,300,302));//用户归属省代码
-//
-//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-//                String date = df.format(new Date());
-//                eduSynHdDed.setCreateTime(date);//记录创建时间
-//                //eduSynHdDed.setBatchNum(date.substring(0, 8));//批次号
-//                eduSynHdDed.setBatchNum(file.getName().substring(3,11));//批次号
+                EduSynHdDed eduSynHdDed = new EduSynHdDed();
 
-                Document doc = new Document();
-
-
-                doc.append("MidFlag","20");//中间记录标记
-                doc.append("ServiceType",ReadFile.getField(listString,3,12));//业务类型
-                doc.append("CutType",ReadFile.getField(listString,13,14));//核减类型
-                doc.append("WoNo",ReadFile.getField(listString,15,34));//工单流水号
-                doc.append("FeeDn",ReadFile.getField(listString,35,49));//计费用户号码
-                doc.append("SpId",ReadFile.getField(listString,50,69));//SP代码
-                doc.append("ServiceCode",ReadFile.getField(listString,70,89));//业务代码
-                doc.append("FeeType",ReadFile.getField(listString,90,91));//计费类型
-                doc.append("UseTime",ReadFile.getField(listString,92,105));//业务使用时间
-                doc.append("CutTime",ReadFile.getField(listString,106,119));//核减时间
-                doc.append("CutFee",Integer.parseInt(ReadFile.getField(listString,120,125)));//核减金额
-                doc.append("ContentId",ReadFile.getField(listString,126,145));//内容ID
-                doc.append("tFlag",ReadFile.getField(listString,146,175));//第三方标识
-                doc.append("Seq",ReadFile.getField(listString,176,200));//序列号
-                doc.append("AddKey1",ReadFile.getField(listString,201,232));//附加查重关键字一
-                doc.append("AddKey2",ReadFile.getField(listString,233,264));//附加查重关键字二
-                doc.append("OrderType",ReadFile.getField(listString,265,267));//订购方式
-                doc.append("RechargeSeq",ReadFile.getField(listString,268,299));//充值序列号
-                doc.append("Province",ReadFile.getField(listString,300,302));//用户归属省代码
+                eduSynHdDed.setMidFlag("20");//中间记录标记
+                eduSynHdDed.setServiceType(ReadFile.getField(listString,3,12));//业务类型
+                eduSynHdDed.setCutType(ReadFile.getField(listString,13,14));//核减类型
+                eduSynHdDed.setWoNo(ReadFile.getField(listString,15,34));//工单流水号
+                eduSynHdDed.setFeeDn(ReadFile.getField(listString,35,49));//计费用户号码
+                eduSynHdDed.setSpId(ReadFile.getField(listString,50,69));//SP代码
+                eduSynHdDed.setServiceCode(ReadFile.getField(listString,70,89));//业务代码
+                eduSynHdDed.setFeeType(ReadFile.getField(listString,90,91));//计费类型
+                eduSynHdDed.setUseTime(ReadFile.getField(listString,92,105));//业务使用时间
+                eduSynHdDed.setCutTime(ReadFile.getField(listString,106,119));//核减时间
+                eduSynHdDed.setCutFee(Integer.parseInt(ReadFile.getField(listString,120,125)));//核减金额
+                eduSynHdDed.setContentId(ReadFile.getField(listString,126,145));//内容ID
+                eduSynHdDed.settFlag(ReadFile.getField(listString,146,175));//第三方标识
+                eduSynHdDed.setSeq(ReadFile.getField(listString,176,200));//序列号
+                eduSynHdDed.setAddKey1(ReadFile.getField(listString,201,232));//附加查重关键字一
+                eduSynHdDed.setAddKey2(ReadFile.getField(listString,233,264));//附加查重关键字二
+                eduSynHdDed.setOrderType(ReadFile.getField(listString,265,267));//订购方式
+                eduSynHdDed.setRechargeSeq(ReadFile.getField(listString,268,299));//充值序列号
+                eduSynHdDed.setProvince(ReadFile.getField(listString,300,302));//用户归属省代码
 
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
                 String date = df.format(new Date());
-                doc.append("CreateTime",date);//记录创建时间
-                doc.append("BatchNum",file.getName().substring(3,11));//批次号
+                eduSynHdDed.setCreateTime(date);//记录创建时间
+                //eduSynHdDed.setBatchNum(date.substring(0, 8));//批次号
+                eduSynHdDed.setBatchNum(file.getName().substring(3,11));//批次号
 
-                eduSynHdDedList.add(doc);
+
+                eduSynHdDedList.add(eduSynHdDed);
 
                 hasIn++;
 
                 if (isDivListInsert && (eduSynHdDedList.size() == batchInsertCount || hasIn == ReadFile.RDATA.size())){
                     try {
-                        cols.insertMany(eduSynHdDedList);
-                        //eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
+                        eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
                         log.info("插入成功！本次插入：" + eduSynHdDedList.size() + "条,还有" + (ReadFile.RDATA.size() - hasIn) + "条");
                         eduSynHdDedList.clear();
                     } catch (Exception e) {
@@ -157,8 +122,7 @@ public class EduSynHdDedService {
 
             if(!isDivListInsert){
                 try {
-                    cols.insertMany(eduSynHdDedList);
-                    //eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
+                    eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
                     log.info("插入成功！共计：" + eduSynHdDedList.size() + "条");
                     ReadFile.clearDataArea();
                     eduSynHdDedList.clear();

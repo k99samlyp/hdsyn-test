@@ -37,15 +37,11 @@ public class EduSynHdDbService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDbService.class);
 
-    //static List<EduSynHdDb> eduSynHdDbList = new ArrayList<>();
-
-    static List<Document> eduSynHdDbList = new ArrayList<>();
+    static List<EduSynHdDb> eduSynHdDbList = new ArrayList<>();
 
     @Autowired
     private EduSynHdDbMapper eduSynHdDbpMapper;
 
-    @Autowired
-    MongoClient mongoClientBean;
 
     /**
      * @Author: miaojiaxing
@@ -58,83 +54,48 @@ public class EduSynHdDbService {
 
         //读取文件内容
         ReadFile.readFile_s(file,true);
-        //List<String> dataList = ReadFile.readFile(file);
-
 
         //去除最后一行无用的数据
         ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
         if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
 
-            MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("db");
-
-
             for (String listString : ReadFile.RDATA) {
                 //将单条数据进行拆分
-//                EduSynHdDb eduSynHdDb = new EduSynHdDb();
+                EduSynHdDb eduSynHdDb = new EduSynHdDb();
 //
                 String stringSplit[] = listString.split(" ");
-//                eduSynHdDb.setRecType(stringSplit[0].substring(0, 2));//话单记录标记
-//                eduSynHdDb.setMsgId(stringSplit[0].substring(2, 23));//消息序列号
-//                eduSynHdDb.setChrgDn(stringSplit[0].substring(23));//计费用户号码
-//                eduSynHdDb.setThirdDn(stringSplit[0].substring(23));//第三方号码
-//                eduSynHdDb.setUserType(stringSplit[1].substring(0, 1));//计费号码用户类型
-//                eduSynHdDb.setOperType(stringSplit[1].substring(1, 3));//业务类型
-//                eduSynHdDb.setSaleMode(stringSplit[1].substring(3, 5));//优惠模式
-//                eduSynHdDb.setDiscount(stringSplit[1].substring(5, 8));//折扣率
-//                eduSynHdDb.setChrgType(stringSplit[1].substring(8, 10));//计费类型
-//                eduSynHdDb.setSpCode(stringSplit[2]);//SP代码
-//                eduSynHdDb.setOperCode(stringSplit[2]);//业务代码
-//                eduSynHdDb.setInfoFee(Integer.parseInt(stringSplit[3].substring(0, 6)));//标准信息费
-//                eduSynHdDb.setDiscountFee(Integer.parseInt(stringSplit[3].substring(6, 12)));//优惠后信息费
-//                eduSynHdDb.setChrgProv(stringSplit[3].substring(12));//计费用户号码归属省
-//                eduSynHdDb.setAccessType(stringSplit[4].substring(0, 2));//定制方式
-//                eduSynHdDb.setApplyTime(stringSplit[4].substring(2, 16));//用户申请时间
-//                eduSynHdDb.setFinishTime(stringSplit[4].substring(16, 30));//话单记录生成时间
-//                eduSynHdDb.setChannelId("");//渠道代码
-//                eduSynHdDb.setImsi("");//IMSI
-//                eduSynHdDb.setImei("");//手机终端设备标识
-//
-//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-//                String date = df.format(new Date());
-//                eduSynHdDb.setCreateTime(date);//记录创建时间
-//
-//                eduSynHdDb.setBatchNum(file.getName().substring(6,14));//批次号
-
-
-                Document doc = new Document();
-
-                doc.append("RecType",stringSplit[0].substring(0, 2));//话单记录标记
-                doc.append("MsgId",stringSplit[0].substring(2, 23));//消息序列号
-                doc.append("ChrgDn",stringSplit[0].substring(23));//计费用户号码
-                doc.append("ThirdDn",stringSplit[0].substring(23));//第三方号码
-                doc.append("UserType",stringSplit[1].substring(0, 1));//计费号码用户类型
-                doc.append("OperType",stringSplit[1].substring(1, 3));//业务类型
-                doc.append("SaleMode",stringSplit[1].substring(3, 5));//优惠模式
-                doc.append("Discount",stringSplit[1].substring(5, 8));//折扣率
-                doc.append("ChrgType",stringSplit[1].substring(8, 10));//计费类型
-                doc.append("SpCode",stringSplit[2]);//SP代码
-                doc.append("OperCode",stringSplit[2]);//业务代码
-                doc.append("InfoFee",Integer.parseInt(stringSplit[3].substring(0, 6)));//标准信息费
-                doc.append("DiscountFee",Integer.parseInt(stringSplit[3].substring(6, 12)));//优惠后信息费
-                doc.append("ChrgProv",stringSplit[3].substring(12));//计费用户号码归属省
-                doc.append("AccessType",stringSplit[4].substring(0, 2));//定制方式
-                doc.append("ApplyTime",stringSplit[4].substring(2, 16));//用户申请时间
-                doc.append("FinishTime",stringSplit[4].substring(16, 30));//话单记录生成时间
-                doc.append("ChannelId","");//渠道代码
-                doc.append("Imsi","");//IMSI
+                eduSynHdDb.setRecType(stringSplit[0].substring(0, 2));//话单记录标记
+                eduSynHdDb.setMsgId(stringSplit[0].substring(2, 23));//消息序列号
+                eduSynHdDb.setChrgDn(stringSplit[0].substring(23));//计费用户号码
+                eduSynHdDb.setThirdDn(stringSplit[0].substring(23));//第三方号码
+                eduSynHdDb.setUserType(stringSplit[1].substring(0, 1));//计费号码用户类型
+                eduSynHdDb.setOperType(stringSplit[1].substring(1, 3));//业务类型
+                eduSynHdDb.setSaleMode(stringSplit[1].substring(3, 5));//优惠模式
+                eduSynHdDb.setDiscount(stringSplit[1].substring(5, 8));//折扣率
+                eduSynHdDb.setChrgType(stringSplit[1].substring(8, 10));//计费类型
+                eduSynHdDb.setSpCode(stringSplit[2]);//SP代码
+                eduSynHdDb.setOperCode(stringSplit[2]);//业务代码
+                eduSynHdDb.setInfoFee(Integer.parseInt(stringSplit[3].substring(0, 6)));//标准信息费
+                eduSynHdDb.setDiscountFee(Integer.parseInt(stringSplit[3].substring(6, 12)));//优惠后信息费
+                eduSynHdDb.setChrgProv(stringSplit[3].substring(12));//计费用户号码归属省
+                eduSynHdDb.setAccessType(stringSplit[4].substring(0, 2));//定制方式
+                eduSynHdDb.setApplyTime(stringSplit[4].substring(2, 16));//用户申请时间
+                eduSynHdDb.setFinishTime(stringSplit[4].substring(16, 30));//话单记录生成时间
+                eduSynHdDb.setChannelId("");//渠道代码
+                eduSynHdDb.setImsi("");//IMSI
+                eduSynHdDb.setImei("");//手机终端设备标识
 
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
                 String date = df.format(new Date());
-                doc.append("CreateTime",date);//记录创建时间
+                eduSynHdDb.setCreateTime(date);//记录创建时间
 
-                doc.append("BatchNum",file.getName().substring(6,14));//批次号
+                eduSynHdDb.setBatchNum(file.getName().substring(6,14));//批次号
 
-                eduSynHdDbList.add(doc);
+                eduSynHdDbList.add(eduSynHdDb);
             }
 
                 try {
-                    cols.insertMany(eduSynHdDbList);
-                    //eduSynHdDbpMapper.batchInsert_mysql(eduSynHdDbList);
+                    eduSynHdDbpMapper.batchInsert_mysql(eduSynHdDbList);
                     log.info("插入成功！共计：" + eduSynHdDbList.size() + "条");
                     ReadFile.clearDataArea();
                     eduSynHdDbList.clear();
