@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  servlet:
+    path: /
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    #url: jdbc:oracle:thin:@112.35.7.170:9110:educloud   #测试库外网
+    url: jdbc:oracle:thin:@10.111.96.5 :9110:educloud    #测试库内网
+#    url: jdbc:oracle:thin:@172.20.10.5:1521:tf
+    username: eduact
+    password: R9nBppJB
+#    password: eduact
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    pool-prepared-statements: true
+    test-while-idle: true
+    validation-query: 'SELECT SYSDATE FROM DUAL'
+    time-between-eviction-runs-millis: 60000
+
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    show-sql: true
+
+
+#测试用地址，部署时改为生成地址！
+hbbsftp:
+  host: 172.20.10.5
+  port: 29
+  username: sam1
+  password: 123456
+
+hdfile:
+  dbpath: /home/sam/hdfile/db/
+  dedpath: /home/sam/hdfile/ded/
+  mthsppath: /home/sam/hdfile/mthsp/
+
+cron:
+#  expression: 0/15 * * * * ?    #每15秒一次，部署时要改成1小时！
+  hd_reso_expression: 0 50 15 * * ?    #每15秒一次，部署时要改成1小时！
+  hd_gen_expression: 0 0 2 * * ?     #每天凌晨2点开始生成
+
+
+logging:
+  path: /home/sam

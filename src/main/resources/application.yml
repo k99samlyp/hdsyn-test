@@ -1,0 +1,59 @@
+server:
+  port: 8080
+  servlet:
+    path: /
+
+spring:
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    show-sql: true
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lyp?serverTimezone=UTC   #测试库内网
+    username: root
+    password: 374886sam
+
+
+##    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    #url: jdbc:oracle:thin:@112.35.7.170:9110:educloud   #测试库外网
+#    url: jdbc:oracle:thin:@127.0.0.1:1521:tf
+##    url: jdbc:oracle:thin:@10.111.96.5:9110:educloud   #测试库内网
+#    username: eduact
+##    password: R9nBppJB
+#    password: eduact
+
+
+    hikari:
+      connection-test-query: 'SELECT 1 FROM DUAL'
+      connection-timeout: 30000
+      minimum-idle: 4
+      maximum-pool-size: 30
+      idle-timeout: 30000
+      max-lifetime: 180000
+
+#测试用地址，部署时改为生成地址！
+hbbsftp:
+  host: 172.20.10.5
+  port: 29
+  username: sam1
+  password: 123456
+
+hdfile:
+  dbpath: /home/sam/hdfile/db/
+  dedpath: /home/sam/hdfile/ded/
+  mthsppath: /home/sam/hdfile/mthsp/
+  batchInsertCount: 20000
+
+cron:
+#  expression: 0/15 * * * * ?    #每15秒一次，部署时要改成1小时！
+  hd_reso_expression: 0 50 15 * * ?    #每15秒一次，部署时要改成1小时！
+  hd_gen_expression: 0 0 2 * * ?     #每天凌晨2点开始生成
+
+
+logging:
+  path: /home/sam
