@@ -21,7 +21,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,9 +35,6 @@ public class HdsynApplicationTests2 {
 
     @Autowired
     HbbCvsGeneratorTask hbbCvsGeneratorTask;
-
-    @Autowired
-    EduSynHdDbQueryService eduSynHdDbQueryService;
 
     @Autowired
     private EduSynHdDbMapper eduSynHdDbpMapper;
@@ -128,44 +128,6 @@ public class HdsynApplicationTests2 {
 
         list(new File("/Users/sam/hddata"));
 
-        //eduHdFilesGeneratorTask.GenerateHdFiles();
-
-
-        //JSONObject rrrr = new JSONObject();
-        //JSON.toJSONString();
-
-       // String rrrr = JSON.toJSONString(eduSynHdMthspService.findAllOrder("898","20180504"));
-
-
-
-
-//        System.out.println("查询数据");
-//
-//        String rrrr = JSON.toJSONString(eduSynHdDedService.findAllOrder("898","20180717"));
-//
-//        System.out.println("创建文件");
-//
-//        File testjsonf = new File("/Users/sam/tsbig.json");
-//
-//        if (!testjsonf.exists()){
-//            testjsonf.createNewFile();
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream(testjsonf);
-//
-//        System.out.println("开始写入");
-//
-//        fos.write(rrrr.getBytes());
-//
-//        System.out.println("完成");
-//
-//        fos.close();
-
-
-       // eduSynHdDbService.GeneratedataFile("/Users/sam/db/","20180617");
-        //eduSynHdDedService.GeneratedataFile("/Users/sam/ded/","20180717");
-        //eduSynHdDedService.GeneratedataFile("20180625");
-        //eduSynHdMthspService.GeneratedataFile("20180620");
 
 
     }

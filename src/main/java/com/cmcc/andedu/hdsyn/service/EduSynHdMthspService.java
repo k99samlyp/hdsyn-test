@@ -49,7 +49,7 @@ public class EduSynHdMthspService {
     @Autowired
     MongoClient mongoClientBean;
 
-    static List<Document> eduSynHdMthspList = new ArrayList<>();
+    static List<Document> eduSynHdMthspList = new ArrayList<>(200);
 
     @Autowired
     private EduSynHdMthspMapper eduSynHdMthspMapper;
@@ -73,6 +73,9 @@ public class EduSynHdMthspService {
         //去除最后一行无用的数据
         ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
         if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
+
+            System.out.println("不为空");
+
             System.out.println("数据长度：" + ReadFile.RDATA.size());
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("mthsp");

@@ -37,7 +37,7 @@ public class EduSynHdDbService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDbService.class);
 
-    static List<Document> eduSynHdDbList = new ArrayList<>();
+    static List<Document> eduSynHdDbList = new ArrayList<>(200);
 
     @Autowired
     private EduSynHdDbMapper eduSynHdDbpMapper;
@@ -60,6 +60,8 @@ public class EduSynHdDbService {
         //去除最后一行无用的数据
         ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
         if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
+
+            System.out.println("不为空");
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("db");
 

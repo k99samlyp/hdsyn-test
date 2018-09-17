@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ import java.util.List;
  * @Version: 1.0
  */
 public class ReadFile {
+
+    public static volatile List<String> fileL = Collections.synchronizedList(new ArrayList<>(40000));
 
     private static Logger log = LoggerFactory.getLogger(ReadFile.class);
 
@@ -94,5 +97,12 @@ public class ReadFile {
      */
     public static String getField(String line, int start,int end){
         return line.substring((start - 1) ,end).replaceAll("\\s*","");
+    }
+
+
+    public static synchronized String getFile_syn(){
+        String filename = ReadFile.fileL.get(0);
+        ReadFile.fileL.remove(0);
+        return filename;
     }
 }

@@ -38,7 +38,7 @@ import java.util.List;
 public class EduSynHdDedService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDedService.class);
-    static List<Document> eduSynHdDedList = new ArrayList<>();
+    static List<Document> eduSynHdDedList = new ArrayList<>(200);
 
     boolean isDivListInsert = false;   //是否分表插入（mybatis批量插入有限制，数据太长，分批提交）
 
@@ -68,6 +68,9 @@ public class EduSynHdDedService {
         //去除最后一行无用的数据
         ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
         if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
+
+            System.out.println("不为空");
+
 
             System.out.println("数据长度：" + ReadFile.RDATA.size());
 
