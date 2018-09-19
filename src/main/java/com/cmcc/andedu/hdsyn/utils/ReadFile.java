@@ -8,9 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @Author: miaojiaxing
@@ -21,17 +20,20 @@ import java.util.List;
  */
 public class ReadFile {
 
-    public static volatile List<String> fileL = Collections.synchronizedList(new ArrayList<>(40000));
+
+    public static volatile Queue<String> fileQueue = new ConcurrentLinkedQueue<>();
+
+    //public static volatile List<String> fileL = Collections.synchronizedList(new ArrayList<>(40000));
 
     private static Logger log = LoggerFactory.getLogger(ReadFile.class);
 
     public static List<String> RDATA = new ArrayList<>(200);
 
-    public static List<String> readFile(File file) {
+    public static List<String> readFile(File file,boolean removeSpace) {
         //编码格式
         String encoding = "UTF-8";
         String lineTxt;
-        List<String> dataList = new ArrayList<>();
+        List<String> dataList = new ArrayList<>(200);
         // List<EduSynHdDb> eduSynHdDbList = new ArrayList<>();
         try {
             InputStreamReader read = new InputStreamReader(new FileInputStream(file), encoding);
@@ -41,7 +43,7 @@ public class ReadFile {
                 //去除第一行无用的数据
                 if (i > 0) {
                     //去除数据中多余的空格，只保留一个
-                    dataList.add(lineTxt.replaceAll(" {2,}", " "));
+                    dataList.add((removeSpace ? lineTxt.replaceAll(" {2,}", " ") : lineTxt));
                 }
                 i++;
             }
@@ -78,8 +80,8 @@ public class ReadFile {
             }
             read.close();
         } catch (Exception e) {
-            log.info("读取文件出错！");
             e.getStackTrace();
+            log.info("读取文件出错！");
         }
 
     }
@@ -101,8 +103,8 @@ public class ReadFile {
 
 
     public static synchronized String getFile_syn(){
-        String filename = ReadFile.fileL.get(0);
-        ReadFile.fileL.remove(0);
-        return filename;
+//        String filename = ReadFile.fileL.get(0);
+//        ReadFile.fileL.remove(0);
+        return ReadFile.fileQueue.poll();
     }
 }

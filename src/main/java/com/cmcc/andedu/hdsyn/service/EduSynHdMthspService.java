@@ -49,8 +49,6 @@ public class EduSynHdMthspService {
     @Autowired
     MongoClient mongoClientBean;
 
-    static List<Document> eduSynHdMthspList = new ArrayList<>(200);
-
     @Autowired
     private EduSynHdMthspMapper eduSynHdMthspMapper;
 
@@ -58,7 +56,7 @@ public class EduSynHdMthspService {
 
     boolean isDivListInsert = false;   //是否分表插入（mybatis批量插入有限制，数据太长，分批提交）
 
-    int hasIn = 0;
+    private int hasIn = 0;
 
     /**
      * @Author: miaojiaxing
@@ -68,23 +66,24 @@ public class EduSynHdMthspService {
      * @Version: 1.0
      */
     public int solveingMTHSP(File file) {
+
+        List<Document> eduSynHdMthspList = new ArrayList<>(200);
+
         //读取文件内容
-        ReadFile.readFile_s(file,true);
+        List<String> datas = ReadFile.readFile(file,true);
         //去除最后一行无用的数据
-        ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
-        if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
+        datas.remove(datas.size() - 1);
+        if (null != datas && datas.size() > 0) {
 
-            System.out.println("不为空");
-
-            System.out.println("数据长度：" + ReadFile.RDATA.size());
+            System.out.println("数据长度：" + datas.size());
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("mthsp");
 
-            if (ReadFile.RDATA.size() > batchInsertCount){
+            if (datas.size() > batchInsertCount){
                 isDivListInsert = true;
             }
 
-            for (String listString : ReadFile.RDATA) {
+            for (String listString : datas) {
                 //将单条数据进行拆分
                 String stringSplit[] = listString.split(" ");
 
@@ -115,12 +114,12 @@ public class EduSynHdMthspService {
                 eduSynHdMthspList.add(doc);
                 hasIn++;
 
-                if (isDivListInsert && (eduSynHdMthspList.size() == batchInsertCount || hasIn == ReadFile.RDATA.size())){
+                if (isDivListInsert && (eduSynHdMthspList.size() == batchInsertCount || hasIn == datas.size())){
                     try {
 
                         //MG插入
                         cols.insertMany(eduSynHdMthspList);
-                        log.info("插入成功！共计：" + eduSynHdMthspList.size() + "条,还有" + (ReadFile.RDATA.size() - hasIn) + "条");
+                        log.info("插入成功！共计：" + eduSynHdMthspList.size() + "条,还有" + (datas.size() - hasIn) + "条");
                         eduSynHdMthspList.clear();
                     } catch (Exception e) {
                         e.printStackTrace();

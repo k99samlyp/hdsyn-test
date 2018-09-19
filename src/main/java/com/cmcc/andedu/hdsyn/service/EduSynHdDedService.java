@@ -38,11 +38,10 @@ import java.util.List;
 public class EduSynHdDedService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDedService.class);
-    static List<Document> eduSynHdDedList = new ArrayList<>(200);
 
     boolean isDivListInsert = false;   //是否分表插入（mybatis批量插入有限制，数据太长，分批提交）
 
-    int hasIn = 0;
+    private int hasIn = 0;
 
     @Autowired
     MongoClient mongoClientBean;
@@ -60,28 +59,27 @@ public class EduSynHdDedService {
      * @Version: 1.0
      */
     public int solveingDed(File file) {
+
+        List<Document> eduSynHdDedList = new ArrayList<>(200);
+
         //读取文件内容
-        ReadFile.readFile_s(file,false);
-        // List<String> dataList = ReadFile.readFile(file);
+        //ReadFile.readFile_s(file,false);
+        List<String> datas = ReadFile.readFile(file,false);
 
 
         //去除最后一行无用的数据
-        ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
-        if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
+        datas.remove(datas.size() - 1);
+        if (null != datas && datas.size() > 0) {
 
-            System.out.println("不为空");
-
-
-            System.out.println("数据长度：" + ReadFile.RDATA.size());
+            //System.out.println("数据长度：" + datas.size());
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("ded");
 
-
-            if (ReadFile.RDATA.size() > batchInsertCount){
+            if (datas.size() > batchInsertCount){
                 isDivListInsert = true;
             }
 
-            for (String listString : ReadFile.RDATA) {
+            for (String listString : datas) {
                 //将单条数据进行拆分
 
                 Document doc = new Document();
@@ -114,11 +112,11 @@ public class EduSynHdDedService {
 
                 hasIn++;
 
-                if (isDivListInsert && (eduSynHdDedList.size() == batchInsertCount || hasIn == ReadFile.RDATA.size())){
+                if (isDivListInsert && (eduSynHdDedList.size() == batchInsertCount || hasIn == datas.size())){
                     try {
                         cols.insertMany(eduSynHdDedList);
                         //eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
-                        log.info("插入成功！本次插入：" + eduSynHdDedList.size() + "条,还有" + (ReadFile.RDATA.size() - hasIn) + "条");
+                        log.info("插入成功！本次插入：" + eduSynHdDedList.size() + "条,还有" + (datas.size() - hasIn) + "条");
                         eduSynHdDedList.clear();
                     } catch (Exception e) {
                         e.printStackTrace();

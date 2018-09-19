@@ -4,10 +4,7 @@ import com.cmcc.andedu.hdsyn.service.EduSynHdDbService;
 import com.cmcc.andedu.hdsyn.service.EduSynHdDedService;
 import com.cmcc.andedu.hdsyn.service.EduSynHdMthspService;
 import com.cmcc.andedu.hdsyn.utils.ReadFile;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by LiYangpan on 2018/9/17  4:08 PM.
@@ -16,26 +13,28 @@ import java.util.List;
  */
 public class HdImportTask implements Runnable {
 
-    @Autowired
     private EduSynHdDbService dbService;
 
-    @Autowired
     private EduSynHdDedService dedService;
 
-    @Autowired
     private EduSynHdMthspService mthspService;
 
+    public HdImportTask(EduSynHdDbService dbS, EduSynHdDedService dedS,EduSynHdMthspService mthspS){
+        this.dbService = dbS;
+        this.dedService = dedS;
+        this.mthspService = mthspS;
+    }
 
     public void excuteResove(File hdfile){
         String fname = hdfile.getName();
-        if (".999".indexOf(fname) == -1){
-            if ("B_EDU".indexOf(fname) > -1){
+        if (fname.indexOf(".999") == -1){
+            if (fname.indexOf("B_EDU") > -1){
                 dbService.solveingDb(hdfile);
             }
-            else if ("DED".indexOf(fname) > -1){
+            else if (fname.indexOf("DED") > -1){
                 dedService.solveingDed(hdfile);
             }
-            else if ("MTHSP".indexOf(fname) > -1){
+            else if (fname.indexOf("MTHSP") > -1){
                 mthspService.solveingMTHSP(hdfile);
             }
         }
@@ -54,20 +53,26 @@ public class HdImportTask implements Runnable {
      */
     @Override
     public void run() {
-//        while (true){
-//            String filename = ReadFile.getFile_syn();
-//            System.out.println("线程：" + Thread.currentThread().getName() + "处理的文件：" + filename);
-//            excuteResove(new File(filename));
-//            System.out.println("剩余：" + ReadFile.fileL.size());
-//        }
-        while (true) {
-            System.out.println("为空为空为空为空为空为空为空为空为空为空为空为空");
-            try {
-                Thread.sleep(1000);
-            }
-            catch (Exception e){
+        while (!ReadFile.fileQueue.isEmpty()){
+            String filename = ReadFile.getFile_syn();
+            System.out.println("线程：" + Thread.currentThread().getName() + "处理的文件：" + filename + "--------------------剩余：" + ReadFile.fileQueue.size());
+            excuteResove(new File(filename));
 
-            }
+//            try {
+//                Thread.sleep(500);
+//            }
+//            catch (Exception e){
+//                e.printStackTrace();
+//            }
         }
+//        while (true) {
+//            System.out.println("线程：" + Thread.currentThread().getName()  + "为空为空为空为空为空为空为空为空为空为空为空为空");
+//            try {
+//                Thread.sleep(1000);
+//            }
+//            catch (Exception e){
+//
+//            }
+//        }
     }
 }

@@ -37,8 +37,6 @@ public class EduSynHdDbService {
 
     private static Logger log = LoggerFactory.getLogger(EduSynHdDbService.class);
 
-    static List<Document> eduSynHdDbList = new ArrayList<>(200);
-
     @Autowired
     private EduSynHdDbMapper eduSynHdDbpMapper;
 
@@ -54,19 +52,18 @@ public class EduSynHdDbService {
      */
     public int solveingDb(File file) {
 
+        List<Document> eduSynHdDbList = new ArrayList<>(200);
+
         //读取文件内容
-        ReadFile.readFile_s(file,true);
+        List<String> datas = ReadFile.readFile(file,true);
 
         //去除最后一行无用的数据
-        ReadFile.RDATA.remove(ReadFile.RDATA.size() - 1);
-        if (null != ReadFile.RDATA && ReadFile.RDATA.size() > 0) {
-
-            System.out.println("不为空");
+        datas.remove(datas.size() - 1);
+        if (null != datas && datas.size() > 0) {
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("db");
 
-
-            for (String listString : ReadFile.RDATA) {
+            for (String listString : datas) {
                 //将单条数据进行拆分
                 String stringSplit[] = listString.split(" ");
 

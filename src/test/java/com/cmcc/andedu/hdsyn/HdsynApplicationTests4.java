@@ -24,10 +24,20 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HdsynApplicationTests4 {
+
+    @Autowired
+    private EduSynHdDbService dbService;
+
+    @Autowired
+    private EduSynHdDedService dedService;
+
+    @Autowired
+    private EduSynHdMthspService mthspService;
 
     static int allFc = 0;
 
@@ -40,7 +50,7 @@ public class HdsynApplicationTests4 {
                 listcon(_f);
             }
             if (_f.isFile()){
-                ReadFile.fileL.add(_f.getAbsolutePath());
+                ReadFile.fileQueue.add(_f.getAbsolutePath());
                 allFc++;
             }
         }
@@ -50,13 +60,21 @@ public class HdsynApplicationTests4 {
     @Test
     public void contextLoads() throws Exception {
 
-        //listcon(new File("/Users/sam/hddata"));
+        listcon(new File("/Users/sam/hddata"));
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        executorService.execute(new HdImportTask());
+        executorService.submit(new HdImportTask(dbService,dedService,mthspService));
 
-        executorService.execute(new HdImportTask());
+        //executorService.submit(new HdImportTask(dbService,dedService,mthspService));
+
+        //executorService.submit(new HdImportTask(dbService,dedService,mthspService));
+
+        //executorService.submit(new HdImportTask(dbService,dedService,mthspService));
+
+        executorService.shutdown();
+
+        executorService.awaitTermination(1, TimeUnit.DAYS);
 
         //executorService.execute(new HdImportTask());
 
