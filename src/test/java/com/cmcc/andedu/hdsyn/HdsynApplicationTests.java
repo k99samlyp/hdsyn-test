@@ -29,9 +29,6 @@ public class HdsynApplicationTests {
     HbbCvsGeneratorTask hbbCvsGeneratorTask;
 
     @Autowired
-    EduSynHdDbQueryService eduSynHdDbQueryService;
-
-    @Autowired
     private EduSynHdDbMapper eduSynHdDbpMapper;
 
 
