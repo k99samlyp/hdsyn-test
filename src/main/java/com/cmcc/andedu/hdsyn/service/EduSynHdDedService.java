@@ -71,83 +71,84 @@ public class EduSynHdDedService {
         datas.remove(datas.size() - 1);
         if (null != datas && datas.size() > 0) {
 
-//            //System.out.println("数据长度：" + datas.size());
-//
-//            MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("ded");
-//
-//            if (datas.size() > batchInsertCount){
-//                isDivListInsert = true;
-//            }
-//
-//            for (String listString : datas) {
-//                //将单条数据进行拆分
-//
-//                Document doc = new Document();
-//                doc.append("MidFlag","20");//中间记录标记
-//                doc.append("ServiceType",ReadFile.getField(listString,3,12));//业务类型
-//                doc.append("CutType",ReadFile.getField(listString,13,14));//核减类型
-//                doc.append("WoNo",ReadFile.getField(listString,15,34));//工单流水号
-//                doc.append("FeeDn",ReadFile.getField(listString,35,49));//计费用户号码
-//                doc.append("SpId",ReadFile.getField(listString,50,69));//SP代码
-//                doc.append("ServiceCode",ReadFile.getField(listString,70,89));//业务代码
-//                doc.append("FeeType",ReadFile.getField(listString,90,91));//计费类型
-//                doc.append("UseTime",ReadFile.getField(listString,92,105));//业务使用时间
-//                doc.append("CutTime",ReadFile.getField(listString,106,119));//核减时间
-//                doc.append("CutFee",Integer.parseInt(ReadFile.getField(listString,120,125)));//核减金额
-//                doc.append("ContentId",ReadFile.getField(listString,126,145));//内容ID
-//                doc.append("tFlag",ReadFile.getField(listString,146,175));//第三方标识
-//                doc.append("Seq",ReadFile.getField(listString,176,200));//序列号
-//                doc.append("AddKey1",ReadFile.getField(listString,201,232));//附加查重关键字一
-//                doc.append("AddKey2",ReadFile.getField(listString,233,264));//附加查重关键字二
-//                doc.append("OrderType",ReadFile.getField(listString,265,267));//订购方式
-//                doc.append("RechargeSeq",ReadFile.getField(listString,268,299));//充值序列号
-//                doc.append("Province",ReadFile.getField(listString,300,302));//用户归属省代码
-//
-//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-//                String date = df.format(new Date());
-//                doc.append("CreateTime",date);//记录创建时间
-//                doc.append("BatchNum",file.getName().substring(3,11));//批次号
-//
-//                eduSynHdDedList.add(doc);
-//
-//                hasIn++;
-//
-//                if (isDivListInsert && (eduSynHdDedList.size() == batchInsertCount || hasIn == datas.size())){
-//                    try {
-//                        cols.insertMany(eduSynHdDedList);
-//                        //eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
-//                        log.info("插入成功！本次插入：" + eduSynHdDedList.size() + "条,还有" + (datas.size() - hasIn) + "条");
-//                        eduSynHdDedList.clear();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        log.info("插入数据异常！");
-//                        return 0;
-//                    }
-//                }
-//            }
-//
-//            if(!isDivListInsert){
-//                try {
-//                    cols.insertMany(eduSynHdDedList);
-//                    log.info("插入成功！共计：" + eduSynHdDedList.size() + "条");
-//                    ReadFile.clearDataArea();
-//                    eduSynHdDedList.clear();
-//                    return 1;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    log.info("插入数据异常！");
-//                    return 0;
-//                }
-//            }
-//            else {
-//                hasIn = 0;
-//                ReadFile.clearDataArea();
-//                return 1;
-//            }
+            //System.out.println("数据长度：" + datas.size());
+
+            System.out.println("\n----------------------------------------------------------------------");
 
             System.out.println("文件：" + file.getAbsolutePath());
 
-            return 1;
+
+            MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("ded");
+
+            if (datas.size() > batchInsertCount){
+                isDivListInsert = true;
+            }
+
+            for (String listString : datas) {
+                //将单条数据进行拆分
+
+                Document doc = new Document();
+                doc.append("MidFlag","20");//中间记录标记
+                doc.append("ServiceType",ReadFile.getField(listString,3,12));//业务类型
+                doc.append("CutType",ReadFile.getField(listString,13,14));//核减类型
+                doc.append("WoNo",ReadFile.getField(listString,15,34));//工单流水号
+                doc.append("FeeDn",ReadFile.getField(listString,35,49));//计费用户号码
+                doc.append("SpId",ReadFile.getField(listString,50,69));//SP代码
+                doc.append("ServiceCode",ReadFile.getField(listString,70,89));//业务代码
+                doc.append("FeeType",ReadFile.getField(listString,90,91));//计费类型
+                doc.append("UseTime",ReadFile.getField(listString,92,105));//业务使用时间
+                doc.append("CutTime",ReadFile.getField(listString,106,119));//核减时间
+                doc.append("CutFee",Integer.parseInt(ReadFile.getField(listString,120,125)));//核减金额
+                doc.append("ContentId",ReadFile.getField(listString,126,145));//内容ID
+                doc.append("tFlag",ReadFile.getField(listString,146,175));//第三方标识
+                doc.append("Seq",ReadFile.getField(listString,176,200));//序列号
+                doc.append("AddKey1",ReadFile.getField(listString,201,232));//附加查重关键字一
+                doc.append("AddKey2",ReadFile.getField(listString,233,264));//附加查重关键字二
+                doc.append("OrderType",ReadFile.getField(listString,265,267));//订购方式
+                doc.append("RechargeSeq",ReadFile.getField(listString,268,299));//充值序列号
+                doc.append("Province",ReadFile.getField(listString,300,302));//用户归属省代码
+
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+                String date = df.format(new Date());
+                doc.append("CreateTime",date);//记录创建时间
+                doc.append("BatchNum",file.getName().substring(3,11));//批次号
+
+                eduSynHdDedList.add(doc);
+
+                hasIn++;
+
+                if (isDivListInsert && (eduSynHdDedList.size() == batchInsertCount || hasIn == datas.size())){
+                    try {
+                        cols.insertMany(eduSynHdDedList);
+                        //eduSynHdDedMapper.batchInsert_mysql(eduSynHdDedList);
+                        log.info("插入成功！本次插入：" + eduSynHdDedList.size() + "条,还有" + (datas.size() - hasIn) + "条");
+                        eduSynHdDedList.clear();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.info("插入数据异常！");
+                        return 0;
+                    }
+                }
+            }
+
+            if(!isDivListInsert){
+                try {
+                    cols.insertMany(eduSynHdDedList);
+                    log.info("插入成功！共计：" + eduSynHdDedList.size() + "条");
+                    ReadFile.clearDataArea();
+                    eduSynHdDedList.clear();
+                    return 1;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.info("插入数据异常！");
+                    return 0;
+                }
+            }
+            else {
+                hasIn = 0;
+                ReadFile.clearDataArea();
+                return 1;
+            }
 
         } else {
             //log.info("文件中无插入数据！");
