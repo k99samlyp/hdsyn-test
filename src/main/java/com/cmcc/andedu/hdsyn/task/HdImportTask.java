@@ -56,7 +56,9 @@ public class HdImportTask implements Runnable {
         while (!ReadFile.ise()){
             String filename = ReadFile.getFile_syn();
             System.out.println("线程：" + Thread.currentThread().getName() + "处理的文件：" + filename + "--------------------剩余：" + ReadFile.fileQueue.size());
-            excuteResove(new File(filename));
+            
+            //excuteResove(new File(filename));
+
 
 //            try {
 //                Thread.sleep(500);

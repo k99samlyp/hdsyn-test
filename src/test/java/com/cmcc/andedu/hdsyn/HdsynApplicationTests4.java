@@ -60,7 +60,7 @@ public class HdsynApplicationTests4 {
     @Test
     public void contextLoads() throws Exception {
 
-        listcon(new File("/Users/sam/hddata"));
+        listcon(new File("/Users/sam/hddata1"));
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
