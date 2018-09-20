@@ -149,7 +149,7 @@ public class EduSynHdMthspService {
                 return 1;
             }
         } else {
-            log.info("文件中无插入数据！");
+            //log.info("文件中无插入数据！");
             return 2;
         }
     }

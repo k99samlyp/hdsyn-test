@@ -29,13 +29,13 @@ public class HdImportTask implements Runnable {
         String fname = hdfile.getName();
         if (fname.indexOf(".999") == -1){
             if (fname.indexOf("B_EDU") > -1){
-                dbService.solveingDb(hdfile);
+                //dbService.solveingDb(hdfile);
             }
             else if (fname.indexOf("DED") > -1){
                 dedService.solveingDed(hdfile);
             }
             else if (fname.indexOf("MTHSP") > -1){
-                mthspService.solveingMTHSP(hdfile);
+                //mthspService.solveingMTHSP(hdfile);
             }
         }
     }
@@ -55,9 +55,8 @@ public class HdImportTask implements Runnable {
     public void run() {
         while (!ReadFile.ise()){
             String filename = ReadFile.getFile_syn();
-            System.out.println("线程：" + Thread.currentThread().getName() + "处理的文件：" + filename + "--------------------剩余：" + ReadFile.fileQueue.size());
-            
-            //excuteResove(new File(filename));
+            //System.out.println("线程：" + Thread.currentThread().getName() + "处理的文件：" + filename + "--------------------剩余：" + ReadFile.fileQueue.size());
+            excuteResove(new File(filename));
 
 
 //            try {

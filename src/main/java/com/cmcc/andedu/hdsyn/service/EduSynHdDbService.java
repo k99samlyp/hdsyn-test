@@ -111,7 +111,7 @@ public class EduSynHdDbService {
                 }
 
         } else {
-            log.info("文件中无插入数据！");
+            //log.info("文件中无插入数据！");
             return 2;
         }
     }
