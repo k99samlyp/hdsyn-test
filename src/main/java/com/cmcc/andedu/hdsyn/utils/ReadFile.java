@@ -103,8 +103,12 @@ public class ReadFile {
 
 
     public static synchronized String getFile_syn(){
-//        String filename = ReadFile.fileL.get(0);
-//        ReadFile.fileL.remove(0);
         return ReadFile.fileQueue.poll();
+    }
+
+    public static synchronized boolean ise(){
+        synchronized (ReadFile.fileQueue){
+            return ReadFile.fileQueue.isEmpty();
+        }
     }
 }
