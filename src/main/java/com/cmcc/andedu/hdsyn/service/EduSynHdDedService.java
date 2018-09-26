@@ -75,7 +75,7 @@ public class EduSynHdDedService {
 
             System.out.println("\n----------------------------------------------------------------------");
 
-            System.out.println("文件：" + file.getAbsolutePath());
+            System.out.println("文件：" + file.getAbsolutePath() + "，长度：" + datas.size());
 
 
             MongoCollection<Document> cols = mongoClientBean.getDatabase("paydata").getCollection("ded");
